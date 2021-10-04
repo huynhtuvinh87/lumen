@@ -1,0 +1,38 @@
+openapi: 3.0.0
+info:
+  description: Dadsmile
+  version: 1.0.0
+  title: Dadsmile Frontend API's
+servers:
+  - url: http://dadsmile-api.softone.asia/api
+    description: Optional server description, e.g. Main (production) server
+  - url: http://localhost:8000/api
+    description: local server
+tags:
+  - name: auth
+    description: Auth user
+  - name: admin
+    description: Manage Admin
+  - name: sale
+    description: Manage sale
+  - name: company
+    description: Manage company
+  - name: user
+    description: user
+paths:
+  /auth/login:
+    $ref: ./paths/auth/login.yaml
+  /auth/logout:
+    $ref: ./paths/auth/logout.yaml
+components:
+  securitySchemes:
+    bearerAuth: # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT # optional, arbitrary value for documentation purposes
+  responses:
+    UnauthorizedError:
+      description: Access token is missing or invalid
+
+security:
+  - bearerAuth: []
