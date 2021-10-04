@@ -47,3 +47,6 @@ $router->group(['middleware' => ['auth:api', 'throttle:60']], function () use ($
     ]);
 });
 
+$router->get('/docs', function () {
+    return view('swagger.index');
+});
