@@ -1,5 +1,4 @@
-
-# REST API with Lumen 5.5 [![Build Status](https://travis-ci.org/hasib32/rest-api-with-lumen.svg?branch=master)](https://travis-ci.org/hasib32/rest-api-with-lumen)
+# REST API with Lumen 8.0 [![Build Status](https://travis-ci.org/hasib32/rest-api-with-lumen.svg?branch=master)](https://travis-ci.org/hasib32/rest-api-with-lumen)
 
 A RESTful API boilerplate for Lumen micro-framework. Features included:
 
@@ -19,82 +18,100 @@ A RESTful API boilerplate for Lumen micro-framework. Features included:
 - Build Process with [Travis CI](https://travis-ci.org/)
 
 ## Getting Started
+
 First, clone the repo:
+
 ```bash
-$ git clone git@github.com:hasib32/rest-api-with-lumen.git
+$ git clone https://github.com/huynhtuvinh87/lumen.git
 ```
 
 #### Laravel Homestead
+
 You can use Laravel Homestead globally or per project for local development. Follow the [Installation Guide](https://laravel.com/docs/5.5/homestead#installation-and-setup).
 
 #### Install dependencies
+
 ```
-$ cd rest-api-with-lumen
+$ cd lumen
 $ composer install
 ```
 
 #### Configure the Environment
+
 Create `.env` file:
+
 ```
 $ cat .env.example > .env
 ```
+
 If you want you can edit database name, database username and database password.
 
 #### Migrations and Seed the database with fake data
+
 First, we need connect to the database. For homestead user, login using default homestead username and password:
+
 ```bash
 $ mysql -uhomestead -psecret
 ```
 
 Then create a database:
+
 ```bash
 mysql> CREATE DATABASE restapi;
 ```
 
 And also create test database:
+
 ```bash
 mysql> CREATE DATABASE restapi_test;
 ```
 
 Run the Artisan migrate command with seed:
+
 ```bash
 $ php artisan migrate --seed
 ```
 
 Create "personal access" and "password grant" clients which will be used to generate access tokens:
+
 ```bash
 $ php artisan passport:install
 ```
 
-You can find those clients in ```oauth_clients``` table.
+You can find those clients in `oauth_clients` table.
 
 ### API Routes
-| HTTP Method	| Path | Action | Scope | Desciption  |
-| ----- | ----- | ----- | ---- |------------- |
-| GET      | /users | index | users:list | Get all users
-| POST     | /users | store | users:create | Create an user
-| GET      | /users/{user_id} | show | users:read |  Fetch an user by id
-| PUT      | /users/{user_id} | update | users:write | Update an user by id
-| DELETE      | /users/{user_id} | destroy | users:delete | Delete an user by id
 
-Note: ```users/me``` is a special route for getting current authenticated user.
+| HTTP Method | Path             | Action  | Scope        | Desciption           |
+| ----------- | ---------------- | ------- | ------------ | -------------------- |
+| GET         | /users           | index   | users:list   | Get all users        |
+| POST        | /users           | store   | users:create | Create an user       |
+| GET         | /users/{user_id} | show    | users:read   | Fetch an user by id  |
+| PUT         | /users/{user_id} | update  | users:write  | Update an user by id |
+| DELETE      | /users/{user_id} | destroy | users:delete | Delete an user by id |
+
+Note: `users/me` is a special route for getting current authenticated user.
 And for all User routes 'users' scope is available if you want to perform all actions.
 
 ### OAuth2 Routes
-Visit [dusterio/lumen-passport](https://github.com/dusterio/lumen-passport/blob/master/README.md#installed-routes) to see all the available ```OAuth2``` routes.
+
+Visit [dusterio/lumen-passport](https://github.com/dusterio/lumen-passport/blob/master/README.md#installed-routes) to see all the available `OAuth2` routes.
 
 ### Creating access_token
-Since Laravel Passport doesn't restrict any user creating any valid scope. I had to create a route and controller to restrict user creating access token only with permitted scopes. For creating access_token we have to use the ```accessToken``` route. Here is an example of creating access_token for grant_type password with [Postman.](https://www.getpostman.com/)
+
+Since Laravel Passport doesn't restrict any user creating any valid scope. I had to create a route and controller to restrict user creating access token only with permitted scopes. For creating access_token we have to use the `accessToken` route. Here is an example of creating access_token for grant_type password with [Postman.](https://www.getpostman.com/)
 
 http://stackoverflow.com/questions/39436509/laravel-passport-scopes
 
 ![access_token creation](/public/images/accessTokenCreation.png?raw=true "access_token creation example")
 
 ## Creating a New Resource
+
 Creating a new resource is very easy and straight-forward. Follow these simple steps to create a new resource.
 
 ### Step 1: Create Route
-Create a new route name ```messages```. Open the ```routes/web.php``` file and add the following code:
+
+Create a new route name `messages`. Open the `routes/web.php` file and add the following code:
 
 ```php
 $route->post('messages', [
@@ -122,7 +139,8 @@ $route->delete('messages/{id}', [
 For more info please visit Lumen [Routing](https://lumen.laravel.com/docs/5.5/routing) page.
 
 ### Step 2: Create Model and Migration for the Table
-Create ```Message``` Model inside ```App/Models``` directory and create migration using Lumen Artisan command.
+
+Create `Message` Model inside `App/Models` directory and create migration using Lumen Artisan command.
 
 **Message Model**
 
@@ -163,6 +181,7 @@ Visit Laravel [Eloquent](https://laravel.com/docs/5.5/eloquent) Page for more in
 ```bash
 php artisan make:migration create_messages_table --create=messages
 ```
+
 **Migration file**
 
 ```php
@@ -190,7 +209,8 @@ class CreateMessagesTable extends Migration
 For more info visit Laravel [Migration](https://laravel.com/docs/5.5/migrations) page.
 
 ### Step 3: Create Repository
-Create ```MessageRepository``` and implementation of the repository name ```EloquentMessageRepository```.
+
+Create `MessageRepository` and implementation of the repository name `EloquentMessageRepository`.
 
 **MessageRepository**
 
@@ -225,7 +245,7 @@ class EloquentMessageRepository extends AbstractEloquentRepository implements Me
 }
 ```
 
-Next, update ```RepositoriesServiceProvider``` to bind the implementation:
+Next, update `RepositoriesServiceProvider` to bind the implementation:
 
 ```php
 <?php
@@ -280,9 +300,10 @@ class RepositoriesServiceProvider extends ServiceProvider
 Visit Lumen documentation for more info about [Service Provider](https://lumen.laravel.com/docs/5.5/providers).
 
 ### Step 4: Create Fractal Transformer
+
 Fractal provides a presentation and transformation layer for complex data output, the like found in RESTful APIs, and works really well with JSON. Think of this as a view layer for your JSON/YAML/etc.
 
-Create a new Transformer name ```MessageTransformer``` inside ```app/Transformers``` directory:
+Create a new Transformer name `MessageTransformer` inside `app/Transformers` directory:
 
 ```php
 <?php
@@ -307,9 +328,11 @@ class MessageTransformer extends TransformerAbstract
     }
 }
 ```
+
 Visit [Fractal](http://fractal.thephpleague.com/) official page for more information.
 
 ### Step 5: Create Policy
+
 For authorization we need to create policy that way basic user can't show or edit other user messages.
 
 **MessagePolicy**
@@ -374,11 +397,15 @@ class MessagePolicy
     }
 }
 ```
-Next, update ```AuthServiceProvider``` to use the policy:
+
+Next, update `AuthServiceProvider` to use the policy:
+
 ```
 Gate::policy(Message::class, MessagePolicy::class);
 ```
-And add scopes to ``Passport::tokensCan``:
+
+And add scopes to `Passport::tokensCan`:
+
 ```
 [
     'messages' => 'Messages scope',
@@ -389,11 +416,12 @@ And add scopes to ``Passport::tokensCan``:
     'messages:delete' => 'Messages scope for deleting records'
 ]
 ```
+
 Visit Lumen [Authorization Page](https://lumen.laravel.com/docs/5.5/authorization) for more info about Policy.
 
 ### Last Step: Create Controller
- 
-Finally, let's create the ```MessageController```. Here we're using **MessageRepository, MessageTransformer and MessagePolicy**.
+
+Finally, let's create the `MessageController`. Here we're using **MessageRepository, MessageTransformer and MessagePolicy**.
 
 ```php
 <?php
@@ -581,13 +609,17 @@ class MessageController extends Controller
 Visit Lumen [Controller](https://lumen.laravel.com/docs/5.5/controllers) page for more info about Controller.
 
 ## Tutorial
+
 To see the step-by-step tutorial how I created this boilerplate please visit our blog [devnootes.net](https://devnotes.net/rest-api-development-with-lumen-part-one/).
 
 ## Contributing
+
 Contributions, questions and comments are all welcome and encouraged. For code contributions submit a pull request.
 
 ## Credits
+
 [Taylor Otwell](https://github.com/taylorotwell), [Shahriar Mahmood](https://github.com/shahriar1), [Fractal](http://fractal.thephpleague.com/), [Phil Sturgeon](https://github.com/philsturgeon)
+
 ## License
 
- [MIT license](http://opensource.org/licenses/MIT)
+[MIT license](http://opensource.org/licenses/MIT)

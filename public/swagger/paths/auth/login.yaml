@@ -1,0 +1,62 @@
+post:
+  tags:
+    - auth
+  summary: Login in Dadsmile 
+  description: 'Login with this API'
+  requestBody:
+    description:
+    required: true
+    content:
+      application/x-www-form-urlencoded:
+        schema:
+          type: object
+          properties:
+            name:
+              type: string
+              description: name in login Admin
+            email:
+              type: string
+              description: email in login Sale
+            email_company:
+              type: string
+              description: email in login Company
+            code_company:
+              type: string
+              description: code company in login Company
+            code:
+              type: string
+              description: code company in login user member
+            email_user:
+              type: string
+              description: email_user in login user member
+            password:
+              type: string
+              description: password in login
+            rememberMe:
+              type: boolean
+              description: rememberMe true or false
+  consumes:
+    - application/x-www-form-urlencoded
+  produces:
+    - application/json
+  responses:
+    '200':
+      description: successful operation
+    '400':
+      description: Bad request
+    '401':
+      description: Unauthorized
+    '500':
+      $ref: '#/components/responses/UnauthorizedError'
+components:
+  securitySchemes:
+    bearerAuth:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT    # optional, arbitrary value for documentation purposes
+  responses:
+    UnauthorizedError:
+      description: Access token is missing or invalid
+
+security:
+  - bearerAuth: []
